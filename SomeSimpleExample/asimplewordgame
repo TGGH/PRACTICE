@@ -1,0 +1,79 @@
+#include<iostream>
+#include<string>
+#include<cstdlib>
+#include<ctime>
+#include<cctype>
+
+using std::string;
+const int NUM = 26;
+const string wordlist[NUM] = {"apiary","badfaw","coiuni","dhuriu","enbiewfa","fwoanc","gboaw","hwoefao","ianwof","jwoeja","kmwom","lwaoc","mwjfoia",
+"nfcaf","opfaenc","pcaec","qhtgdf","rpcmio","sfthnj","tntsfsgf","ubrsfda","vfaefc","wrbtrf","xfwef","ycvaf","zfavf"};
+
+int main()
+{
+	using std::cout;
+	using std::endl;
+	using std::cin;
+
+	char a;
+	cout << "Do you want to play a word game? (y/n)" << endl;
+	cin >> a;
+	a = tolower(a);
+	while (a == 'y')
+	{
+		int chance = 6;
+		int loc;
+		char x;
+		string answer = wordlist[std::rand() % NUM];
+		int length = answer.length();
+		string attempt(length, '-');
+		string badchar;
+		cout << "You have 6 chance to guess the letters of the word." << endl;
+		cout << "please enter your guess: ";
+		cin >> x;
+		while (answer != attempt&&chance > 0)
+		{
+			while(badchar.find(x) != string::npos || attempt.find(x) != string::npos)
+			{
+				cout << "You have guessed this letter,try again.\n";
+				cin >> x;
+			}
+			chance--;
+			int loc = answer.find(x);
+			if (loc == string::npos)
+			{
+				cout << "bad guess,there is no " << x << " in the string.\nthe string now is "<<attempt<<endl;
+				badchar+=x;
+			}
+			else
+			{
+				attempt[loc] = x;
+				loc = answer.find(x, loc + 1);
+				while (loc != string::npos)
+				{
+					attempt[loc] = x;
+					loc = answer.find(x, loc + 1);
+				}
+				cout << "your guess is right!congratulations.\nthe string now is " << attempt << endl;
+			}
+			cout << "please continue to guess:";
+			cin >> x;
+		}
+		if (attempt == answer)
+		{
+			cout << "congratulations!You got the right answer." << endl;
+			cout << "the answer is " << answer << endl;
+			cout << "And you save " << chance << " chances." << endl;
+		}
+		else
+		{
+			cout << "Sorry,you have no chances.\nThe right answer is " << answer << endl;
+		}
+
+		cout << "Do you want to continue the game?(y/n)\n";
+		cin >> a;
+		a = tolower(a);
+
+	}
+	return 0;
+}
